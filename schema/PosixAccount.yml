@@ -1,0 +1,14 @@
+name: PosixAccount
+type: user
+objectclasses: ['posixAccount', 'top']
+required:
+  - { name: uid }
+  - { name: cn }
+  - { name: uidnumber }
+  - { name: gidnumber }
+  - { name: homeDirectory }
+optional:
+  - { name: loginShell }
+  - { name: gecos }
+  - { name: description }
+  - { name: authPassword, secret: true }

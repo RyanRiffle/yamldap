@@ -1,0 +1,13 @@
+name: LinuxUser
+type: user
+objectClasses:
+  - top
+  - inetOrgPerson
+  - posixAccount
+requires:
+  - uidnumber
+  - gidnumber
+  - homeDirectory
+  - uid
+  - sn
+  - cn

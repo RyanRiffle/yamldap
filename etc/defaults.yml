@@ -1,0 +1,9 @@
+homeDirectory: "/nfs/home/{{uid}}"
+loginShell: /bin/bash
+cn: "{{uid}}"
+sn: "{{uid}}"
+gecos: "{{uid}}"
+
+repositories:
+  test_repo:
+    loginShell: /bin/sh

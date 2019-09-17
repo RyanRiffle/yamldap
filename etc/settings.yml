@@ -1,0 +1,15 @@
+# Settings for the system
+ldap_base: 
+group_base: 
+user_base: 
+
+# These aren't used right now
+bind_dn: 
+bind_pw: 
+
+# If a repo is selected at runtime, the repo settings will overwrite the main level settings above
+repositoris:
+  test:
+    ldap_base: dc=test
+    group_base: ou=groups,dc=test
+    user_base: ou=People,dc=test
