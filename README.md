@@ -3,6 +3,17 @@ YamLDAP
 
 An LDIF generator using YAML for configuration and Jinja2 for templating. 
 
+## Features
+- Generate Add LDIF
+- Generate Modify LDIF
+  - Replace
+  - Add
+  - Delete
+  - Increment
+
+- Ability to make attributes secret or sensative to keep them out of shell history
+- Ability to set defaults, and use Jinja2 templates in them
+
 ## Getting Started
 
 First things first, create a schema file. Remember that the first required attribute (or may attribute if no required attributes exist) is considered the primary key. The requires block must at a **minimum** have all attributes that are required by the objectclasses specified, however may attributes can be specified as required e.g. loginShell.

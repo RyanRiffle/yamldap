@@ -286,8 +286,9 @@ if args.which == 'ldif2yaml':
         if line.isspace():
           dest.write('- ' + yaml.dump(yaml.load(data)).strip() + '\n')
           total_read += len(data)
+          entries += 1
           data = ''
-          sys.stdout.write('\r%d%% Bytes read %d MB' % ((total_read / src_size), total_read / 1024 / 1024) )
+          sys.stdout.write('\r%d%% Bytes read %d MB (Processed %d entries)' % ((total_read / src_size), total_read / 1024 / 1024, entries) )
         else:
           data += line
         line = source.readline()
