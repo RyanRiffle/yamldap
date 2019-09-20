@@ -173,7 +173,15 @@ def SaveLDIF(lines):
   return filename
 
 def GetBaseFromSchema(schema):
-  return settings.get(schema.get('type') + '_base')
+  oldbase = ''
+  base = schema.get('type') + '_base'
+  if settings.get(base) == None:
+    oldbase = base
+    base = schema.get('ldap_base')
+    if settings.get(base) == None:
+      print(bcolors.WARNING + "WARNING: Failed to find " + oldbase + " in settings.yml" + bcolors.ENDC)
+      return True, raw_input('DN: ')
+  return False, settings.get(base)
 
 def GenerateDN(schema, value, base):
   return (first(schema.get('required')).get('name') + '=' + value + ',' + base)
@@ -183,8 +191,12 @@ def CreateAddLDIF(schema, values):
   # Schema type decides what base gets pulled from settings, if type is "user" then the setting will be user_base
   # likewise for group, group_base
   lines = []
-  base = GetBaseFromSchema(schema)
-  lines.append('dn: ' + GenerateDN(schema, values.get(first(values)), base))
+  isFullDN, base = GetBaseFromSchema(schema)
+  if isFullDN:
+    lines.append(base)
+  else:
+    lines.append('dn: ' + GenerateDN(schema, values.get(first(values)), base))
+
   for objectclass in schema.get('objectclasses'):
     lines.append('objectclass: ' + objectclass)
   for item in values.iteritems():
@@ -217,8 +229,12 @@ with open('./etc/settings.yml', 'r') as f:
 
 def CreateModifyLDIF(schema, items, operation):
   lines = []
-  base = GetBaseFromSchema(schema)
-  lines.append('dn: ' + GenerateDN(schema, args.key, base))
+  isFullDN, base = GetBaseFromSchema(schema)
+  if isFullDN:
+    lines.append(base)
+  else:
+    lines.append('dn: ' + GenerateDN(schema, args.key, base))
+
   lines.append('changetype: modify')
   for item in items:
     lines.append(operation + ': ' + item)
@@ -272,7 +288,7 @@ if args.which == 'modify':
 
   items = {}
   items[args.attribute] = value
-  CreateModifyLDIF(schema, items, args.modify_type)  
+  CreateModifyLDIF(schema, items, args.modify_type)
 
 if args.which == 'ldif2yaml':
   with open(args.src, 'r') as source:
